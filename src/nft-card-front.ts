@@ -4,7 +4,6 @@ import { classMap } from 'lit-html/directives/class-map'
 import { styleMap } from 'lit-html/directives/style-map'
 
 import {
-  Network,
   OpenSeaAsset,
   OpenSeaCollection,
   OpenSeaFungibleToken
@@ -31,7 +30,6 @@ export class NftCardFrontTemplate extends LitElement {
         background: #ffffff;
         border-radius: 5px;
         display: grid;
-        grid-template-columns: 1fr 2fr;
         position: relative;
         width: 100%;
         height: 100%;
@@ -67,11 +65,7 @@ export class NftCardFrontTemplate extends LitElement {
       }
 
       .asset-details-container {
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr 1fr;
-        padding: 20px;
-        align-items: center;
+        display: none;
       }
       .asset-detail {
         display: flex;
@@ -196,59 +190,9 @@ export class NftCardFrontTemplate extends LitElement {
       return undefined // If there is no asset then we can't render
     }
 
-    const { openseaLink, collection, name } = this.asset
-    const { network } = this.state
-
     return html`
       <div class="card-front ${classMap({ 'is-vertical': !this.horizontal })}">
-        ${this.asset.traits.length > 0
-          ? html`
-              <info-button
-                style="position: absolute; top: 5px; right: 5px"
-                @flip-event="${(e: any) => this.eventHandler(e, 'flip')}"
-              ></info-button>
-            `
-          : ''}
         ${this.getAssetImageTemplate()}
-
-        <div class="asset-details-container">
-          <div class="asset-detail">
-            <div class="asset-detail-type">
-              <a
-                class="asset-link"
-                href="http://${network === Network.Rinkeby
-                  ? 'rinkeby.'
-                  : ''}opensea.io/assets/${collection.slug}"
-                target="_blank"
-              >
-                <pill-element
-                  .imageUrl=${collection.imageUrl}
-                  .label=${collection.name}
-                  textColor="#828282"
-                  border="1px solid #E2E6EF"
-                ></pill-element>
-              </a>
-            </div>
-            <!-- This badge is optional and must be rendered programmatically -->
-            <!-- <div class="asset-detail-badge">
-              <pill-element
-                label="New"
-                backgroundColor="#23DC7D"
-                textColor="#FFFFFF"
-              ></pill-element>
-            </div> -->
-          </div>
-          <div class="spacer"></div>
-          <div class="asset-detail-name">
-            <a class="asset-link" href="${openseaLink}" target="_blank"
-              >${name}</a
-            >
-          </div>
-          ${this.getAssetPriceTemplate()}
-          <div class="asset-action-buy">
-            ${this.getButtonTemplate()}
-          </div>
-        </div>
       </div>
     `
   }
@@ -310,14 +254,6 @@ export class NftCardFrontTemplate extends LitElement {
           ></div>
         </a>
       </div>
-    `
-  }
-
-  private getButtonTemplate() {
-    return html`
-      <button @click="${(e: any) => this.eventHandler(e, 'view')}">
-        ${BTN_TEXT[ButtonType.Buy]}
-      </button>
     `
   }
 

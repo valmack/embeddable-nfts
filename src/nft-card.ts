@@ -274,9 +274,7 @@ export class NftCard extends LitElement {
         class="card ${this.flippedCard ? 'flipped-card' : ''}"
         style=${styleMap({
           width: this.width,
-          height: this.height,
-          minHeight: this.minHeight,
-          maxWidth: this.maxWidth
+          height: this.height
         })}
       >
         <div class="card-inner">
